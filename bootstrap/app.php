@@ -24,40 +24,40 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->redirectGuestsTo(fn () => route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (NotFoundHttpException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_NOT_FOUND, null),
             ], Response::HTTP_NOT_FOUND);
         });
 
         $exceptions->render(function (AccessDeniedHttpException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_FORBIDDEN, null),
             ], Response::HTTP_FORBIDDEN);
         });
 
         $exceptions->render(function (AuthenticationException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_UNAUTHORIZED, null),
             ], Response::HTTP_UNAUTHORIZED);
         });
 
         $exceptions->render(function (UnauthorizedHttpException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_UNAUTHORIZED, null),
             ], Response::HTTP_UNAUTHORIZED);
         });
         
         $exceptions->render(function (ValidationException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_BAD_REQUEST, null),
                 'errors' => $e->validator->errors(),
             ], Response::HTTP_BAD_REQUEST);
@@ -65,14 +65,14 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (BadRequestHttpException $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_BAD_REQUEST, null),
             ], Response::HTTP_BAD_REQUEST);
         });
 
         $exceptions->render(function (Throwable $e) {
             return response()->json([
-                'status_code' => ResponseCode::FAILED,
+                'status_code' => ResponseCode::ERROR,
                 'message' => App::hasDebugModeEnabled() ? $e->getMessage() : Arr::get(ResponseCode::MESSAGE, Response::HTTP_INTERNAL_SERVER_ERROR, null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         });

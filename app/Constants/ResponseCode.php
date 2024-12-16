@@ -5,8 +5,8 @@ use Illuminate\Http\Response;
 
 class ResponseCode
 {
-    const FAILED = 0;
-    const SUCCESS = 1;
+    const ERROR = 'error';
+    const SUCCESS = 'success';
     const MESSAGE = [
         Response::HTTP_OK => 'Success',
         Response::HTTP_NOT_FOUND => 'Not Found',
