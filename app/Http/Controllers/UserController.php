@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Constants\ResponseCode;
 use App\Contracts\UserContract;
 use App\Http\Requests\FilterUserRequest;
 use App\Http\Requests\UserRequest;
@@ -22,14 +21,6 @@ class UserController extends Controller
     public function index(FilterUserRequest $request)
     {
         return new UserCollection($this->userService->index($request->validated()));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserRequest $request)
-    {
-        return new UserResource($this->userService->store($request->validated()));
     }
 
     /**
