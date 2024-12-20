@@ -10,9 +10,6 @@ services:
     container_name: codebase-app
     restart: unless-stopped
     working_dir: /app
-    environment:
-      XDEBUG_CONFIG: "client_host=172.29.48.1 idekey==PHPSTORM client_port=9004 mode=debug"
-      PHP_IDE_CONFIG: "serverName=codebase-app"
     volumes:
       - ./:/app
     networks:
@@ -30,10 +27,12 @@ services:
     volumes:
       - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: codebase
-      MYSQL_DATABASE: codebase
-      MYSQL_USER: codebase
-      MYSQL_PASSWORD: codebase
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
     networks:
       - codebase-network
 
@@ -65,11 +64,3 @@ services:
 networks:
   codebase-network:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.220.16/28
-
-volumes:
-  pg_data:
-    driver: local
