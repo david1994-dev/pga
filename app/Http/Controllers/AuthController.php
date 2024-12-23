@@ -28,6 +28,7 @@ class AuthController extends Controller
     public function register(UserRequest $request)
     {
         $requestValidation = $request->validated();
+        dd($requestValidation);
         return new UserResource($this->userService->store(
             [
                 'name' => $requestValidation['name'],

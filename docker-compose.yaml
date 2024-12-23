@@ -61,6 +61,13 @@ services:
     networks:
       - codebase-network
 
+  node:
+    image: node:20
+    container_name: codebase-node
+    working_dir: /app
+    volumes:
+      - ./:/app
+
 networks:
   codebase-network:
     driver: bridge
