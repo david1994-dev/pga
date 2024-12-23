@@ -1,0 +1,66 @@
+services:
+  app:
+    build:
+      args:
+        USER: user
+        USER_ID: 1000
+        GROUP_ID: 1000
+      context: docker/php
+      dockerfile: Dockerfile
+    container_name: codebase-app
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./:/app
+    networks:
+      - codebase-network
+
+  db:
+    image: mysql:8.0.32
+    container_name: codebase-mysql
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - "13306:3306"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - codebase-network
+
+  nginx:
+    image: nginx:latest
+    container_name: codebase-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./:/app
+      - ./docker/nginx:/etc/nginx/conf.d/
+    networks:
+      codebase-network:
+        aliases:
+          - codebase.localhost
+    depends_on:
+      - app
+
+  redis:
+    container_name: codebase-redis
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - codebase-network
+
+networks:
+  codebase-network:
+    driver: bridge
