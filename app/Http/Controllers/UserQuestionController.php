@@ -11,7 +11,7 @@ class UserQuestionController extends Controller
 {
     public function index()
     {
-        $questions = Question::query()->latest('id')->get();
+        $questions = Question::query()->latest('id')->limit(1)->get();
 
         return view('welcome', ['questions' => $questions]);
     }

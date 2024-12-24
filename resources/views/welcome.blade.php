@@ -34,7 +34,7 @@
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                     <main class="mt-6">
-                        <form method="POST" action="{{ route('anwser') }}">
+                        <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit">
                             @csrf
                         <div>
                             <input type="text" name="user_answer" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="*Vui lòng nhập tên" required />
@@ -77,6 +77,17 @@
                 $(`input[id^=${questionId}]`).not(':checked').attr('disabled', true);
             } else {
                 $(`input[id^=${questionId}]`).attr('disabled', false);
+            }
+        })
+
+        $('.jsFormSumbit').on('submit', function(e) {
+            e.preventDefault();
+            let maxAnswer = $('.jsAnswerCheckbox').data('max-answer');
+            let totalChecked = $('.jsAnswerCheckbox:checked').length;
+            if (totalChecked !== maxAnswer) {
+                alert('Vui lòng chọn đủ đáp án');
+            } else {
+                this.submit();
             }
         })
     </script>
