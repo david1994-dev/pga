@@ -4,7 +4,11 @@
             {{ __('Quản trị') }}
         </h2>
     </x-slot>
-
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: red ; padding: 10px">{{ $error }}</div>
+        @endforeach
+    @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

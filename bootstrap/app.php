@@ -41,11 +41,15 @@ return Application::configure(basePath: dirname(__DIR__))
             ], Response::HTTP_FORBIDDEN);
         });
 
-        $exceptions->render(function (AuthenticationException $e) {
-            return response()->json([
-                'status_code' => ResponseCode::ERROR,
-                'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_UNAUTHORIZED, null),
-            ], Response::HTTP_UNAUTHORIZED);
+        $exceptions->render(function (AuthenticationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status_code' => ResponseCode::ERROR,
+                    'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_UNAUTHORIZED, null),
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+            return redirect('/login');
         });
 
         $exceptions->render(function (UnauthorizedHttpException $e) {
@@ -55,12 +59,18 @@ return Application::configure(basePath: dirname(__DIR__))
             ], Response::HTTP_UNAUTHORIZED);
         });
         
-        $exceptions->render(function (ValidationException $e) {
-            return response()->json([
-                'status_code' => ResponseCode::ERROR,
-                'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_BAD_REQUEST, null),
-                'errors' => $e->validator->errors(),
-            ], Response::HTTP_BAD_REQUEST);
+        $exceptions->render(function (ValidationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status_code' => ResponseCode::ERROR,
+                    'message' => Arr::get(ResponseCode::MESSAGE, Response::HTTP_BAD_REQUEST, null),
+                    'errors' => $e->validator->errors(),
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            return redirect()->back()
+                ->withInput($request->all())
+                ->withErrors($e->validator->errors());
         });
 
         $exceptions->render(function (BadRequestHttpException $e) {

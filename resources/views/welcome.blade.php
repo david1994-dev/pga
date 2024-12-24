@@ -21,10 +21,15 @@
     </head>
     <body class="font-sans antialiased">
         @if (session('status') == 'answer-stored')
-        <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: green ; padding: 10px">
-            {{ __('Answer created successfully') }}
-        </div>
-    @endif
+            <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: green ; padding: 10px">
+                {{ __('Answer created successfully') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: red ; padding: 10px">{{ $error }}</div>
+            @endforeach
+        @endif
         <div class="bg-gray-50">
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
