@@ -37,15 +37,17 @@
                         <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit">
                             @csrf
                         <div>
-                            <input type="text" name="user_answer" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="*Vui lòng nhập tên" required />
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Họ Tên - Bu</label>
+                            <input type="text" name="user_answer" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" placeholder="Nguyễn Văn A - Bu1" required />
                         </div>
                         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8 pt-3">
                             @foreach ($questions as $question)
                             <div class="flex flex-col">
                                 <div>
                                     <b>
-                                        {{$loop->iteration.'. '. $question->title }}. (Chọn {{$question->max_answers }} đáp án)
+                                        {{$loop->iteration.'. '. $question->title }}
                                     </b>
+                                    <div style="color: red"><small>*Chọn {{$question->max_answers }} đáp án</small></div>
                                 </div>
                                 <div class="flex flex-col">
                                     @foreach ($question->answers as $answer)
