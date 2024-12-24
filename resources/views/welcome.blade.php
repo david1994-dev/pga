@@ -39,13 +39,13 @@
                             <div class="flex flex-col">
                                 <div>
                                     <b>
-                                        {{$loop->iteration.'. '. $question->title }}
+                                        {{$loop->iteration.'. '. $question->title }}. (Chọn {{$question->max_answers }} đáp án)
                                     </b>
                                 </div>
                                 <div class="flex flex-col">
                                     @foreach ($question->answers as $answer)
                                         <div>
-                                            <input type="checkbox" id="question_{{ $question->id }}" name="answers_{{$question->id}}[]" value="{{ $answer }}">
+                                            <input data-max-answer="{{ $question->max_answers }}" type="checkbox" id="question_{{ $question->id }}" name="answers_{{$question->id}}[]" value="{{ $answer }}" class="jsAnswerCheckbox">
                                         <label for="question_{{ $question->id }}">{{ $answer }}</label>
                                         </div>
                                     @endforeach
@@ -63,4 +63,16 @@
             </div>
         </div>
     </body>
+    <script type="module">
+        $('.jsAnswerCheckbox').on('click', function() {
+            let maxAnswer = $(this).data('max-answer');
+            let questionId = $(this).attr('id');
+            let totalChecked = $(`input[id^=${questionId}]:checked`).length;
+            if (totalChecked === maxAnswer) {
+                $(`input[id^=${questionId}]`).not(':checked').attr('disabled', true);
+            } else {
+                $(`input[id^=${questionId}]`).attr('disabled', false);
+            }
+        })
+    </script>
 </html>

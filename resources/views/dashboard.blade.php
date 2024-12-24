@@ -1,4 +1,9 @@
 <x-app-layout>
+    <style>
+        .filter-red{
+            filter: invert(20%) sepia(86%) saturate(7243%) hue-rotate(357deg) brightness(105%) contrast(114%);
+        }
+    </style>
     @if (session('status') == 'question-stored')
         <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: green ; padding: 10px">
             {{ __('Question created successfully') }}
@@ -31,6 +36,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Người Tạo
                                     </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Hành động
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,6 +56,9 @@
                                     <td class="px-6 py-4">
                                         {{ @$question->createdBy->name }}
                                     </td>
+                                    <td class="px-6 py-4">
+                                        <img class="jsDeleteQuestion filter-red" src = "{{ asset('/icon/trash.svg') }}" style="width: 23px; cursor: pointer" data-id={{ $question->id }}/>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -57,4 +68,23 @@
             </div>
         </div>
     </div>
+    <script type="module">
+        $('.jsDeleteQuestion').on('click', function() {
+            let id = $(this).data('id');
+            if(confirm('Bạn có chắc chắn muốn xóa câu hỏi này không?')) {
+                $.ajax({
+                    url: `/question/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>

@@ -24,17 +24,20 @@ class UserQuestionController extends Controller
         $userAnswer = $request->except(['_token', 'user_answer']);
         foreach ($userAnswer as $qAnswer => $answer) {
             $questionId = (int)explode('_', $qAnswer)[1];
+            $question = Question::findOrFail($questionId);
+            if (count($answer) !== $question->max_answers) {
+                throw new \Exception('You have selected more answers than allowed');
+            }
+
             $userQuestion = new UserQuestion([
                 'question_id' => $questionId,
                 'answer' => $answer,
                 'user_answer' => $validatedData['user_answer'],
             ]);
 
-            //update score
-            $question = Question::findOrFail($questionId);
             $score = 0;
             foreach ($answer as $as) {
-                if (in_array($as, $question->answers)) {
+                if (in_array($as, $question->correct_answers)) {
                     $score++;
                 }
             }

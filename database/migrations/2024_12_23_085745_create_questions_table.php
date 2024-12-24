@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->json('answers');
+            $table->json('correct_answers');
+            $table->integer('max_answers');
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
         });

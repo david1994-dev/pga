@@ -32,7 +32,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($questionUsers as $questionUser)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" @if($loop->iteration <= 3) style="background:blue" @endif>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $loop->iteration }}
                                     </td>
@@ -40,7 +40,7 @@
                                         {{ $questionUser->user_answer }}
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{ $questionUser->score }}
+                                        {{ $questionUser->score }} / {{ count($questionUser->answer) }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ @$questionUser->created_at }}
