@@ -33,63 +33,11 @@
         <div class="bg-gray-50">
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                    <main class="mt-6">
-                        <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit">
-                            @csrf
-                            <input type="hidden" name="question_uuid" value="{{ $question->uuid }}">
-                        <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Họ Tên - Bu</label>
-                            <input type="text" name="user_answer" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" placeholder="Nguyễn Văn A - Bu1" required />
-                        </div>
-                        <div class="grid gap-6 lg:grid-cols-2 lg:gap-8 pt-3">
-                            <div class="flex flex-col">
-                                <div>
-                                    <b>
-                                        {{'1. '. $question->title }}
-                                    </b>
-                                    <div style="color: red"><small>*Chọn {{$question->max_answers }} đáp án</small></div>
-                                </div>
-                                <div class="flex flex-col">
-                                    @foreach ($question->answers as $answer)
-                                        <div>
-                                            <input data-max-answer="{{ $question->max_answers }}" type="checkbox" id="question" name="answers[]" value="{{ $answer }}" class="jsAnswerCheckbox">
-                                        <label for="question_{{ $question->id }}">{{ $answer }}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-6">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style="background: blue">
-                                Lưu
-                            </button>
-                        </form>
+                    <main class="mt-6 flex items-center justify-center h-[100vh]">
+                       <h1>BnK quizizz!</h1>
                     </main>
                 </div>
             </div>
         </div>
     </body>
-    <script type="module">
-        $('.jsAnswerCheckbox').on('click', function() {
-            let maxAnswer = $(this).data('max-answer');
-            let questionId = $(this).attr('id');
-            let totalChecked = $(`input[id^=${questionId}]:checked`).length;
-            if (totalChecked === maxAnswer) {
-                $(`input[id^=${questionId}]`).not(':checked').attr('disabled', true);
-            } else {
-                $(`input[id^=${questionId}]`).attr('disabled', false);
-            }
-        })
-
-        $('.jsFormSumbit').on('submit', function(e) {
-            e.preventDefault();
-            let maxAnswer = $('.jsAnswerCheckbox').data('max-answer');
-            let totalChecked = $('.jsAnswerCheckbox:checked').length;
-            if (totalChecked !== maxAnswer) {
-                alert('Vui lòng chọn đủ đáp án');
-            } else {
-                this.submit();
-            }
-        })
-    </script>
 </html>

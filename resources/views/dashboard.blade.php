@@ -21,42 +21,48 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg h-[100vh]">
                 <div class="p-6 text-gray-900">
                     <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table class="table">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
                                         STT
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
                                         Câu hỏi
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
                                         SL người trả lời
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
                                         Người Tạo
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
+                                        Link
+                                    </th>
+                                    <th scope="col">
                                         Hành động
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($questions as $question)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                <tr>
+                                    <th scope="row">
                                         {{ $loop->iteration }}
-                                    </td>
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $question->title }}
                                     </th>
-                                    <td class="px-6 py-4">
+                                    <td>
+                                        {{ $question->title }}
+                                    </td>
+                                    <td>
                                         <a href="{{ route('question.statistical', $question->id) }}">{{ $question->userQuestions->count() }}</a>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td>
                                         {{ @$question->createdBy->name }}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td>
+                                        {{ route('question.show', $question->uuid) }}
+                                    </td>
+                                    <td>
                                         <img class="jsDeleteQuestion filter-red" src = "{{ asset('/icon/trash.svg') }}" style="width: 23px; cursor: pointer" data-id={{ $question->id }}/>
                                     </td>
                                 </tr>

@@ -5,7 +5,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserQuestionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [UserQuestionController::class, 'index']);
+Route::get('/', [QuestionController::class, 'home'])->name('home');
+
 Route::post('/anwser', [UserQuestionController::class, 'anwser'])->name('anwser');
 
 Route::get('/dashboard', [QuestionController::class, 'index'])->middleware(['auth'])->name('dashboard');
@@ -15,6 +16,7 @@ Route::get('/question', function () {
 })->middleware(['auth'])->name('question');
 
 Route::post('/question', [QuestionController::class, 'store'])->middleware(['auth'])->name('question.store');
+Route::get('/question/{uuid}', [QuestionController::class, 'show'])->middleware(['auth'])->name('question.show');
 Route::delete('/question/{id}', [QuestionController::class, 'delete'])->middleware(['auth'])->name('question.delete');
 Route::get('/question-statistical/{id}', [QuestionController::class, 'statisctical'])->middleware(['auth'])->name('question.statistical');
 

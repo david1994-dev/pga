@@ -13,8 +13,8 @@
                         <h3>{{ $question->title }}</h3>
                     </div>
                     <div class="relative overflow-x-auto pt-3">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table class="table">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         STT
@@ -32,23 +32,46 @@
                             </thead>
                             <tbody>
                                 @foreach ($questionUsers as $questionUser)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" @if($loop->iteration <= 3) style="background:blue" @endif>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                <tr @if($questionUser->score === count($questionUser->answer) && $loop->iteration <= 3) style="background:#6fec9f" @endif>
+                                    <th scope="row">
                                         {{ $loop->iteration }}
-                                    </td>
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $questionUser->user_answer }}
                                     </th>
-                                    <td class="px-6 py-4">
-                                        {{ $questionUser->score }} / {{ count($questionUser->answer) }}
+                                    <td>
+                                        {{ $questionUser->user_answer }}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-question-{{ $questionUser->id }}">
+                                            {{ $questionUser->score }} / {{ count($questionUser->answer) }}
+                                        </button>
+                                    </td>
+                                    <td>
                                         {{ @$questionUser->created_at }}
                                     </td>
                                 </tr>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal-question-{{ $questionUser->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Câu trả lời:</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach ($questionUser->answer as $answer)
+                                                <p>- {{ $answer }}</p>
+                                            @endforeach
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $questionUsers->links() }}
                     </div>
                 </div>
             </div>

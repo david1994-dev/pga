@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = ['title', 'answers', 'created_by', 'correct_answers', 'max_answers'];
+    protected $fillable = ['title', 'answers', 'created_by', 'correct_answers', 'max_answers', 'uuid'];
     protected $casts = [
         'answers' => 'array',
         'correct_answers' => 'array',

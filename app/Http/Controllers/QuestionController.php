@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\UserQuestion;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class QuestionController extends Controller
 {
@@ -34,7 +35,8 @@ class QuestionController extends Controller
             'answers' => $answers,
             'correct_answers' => $correctAnswers,
             'max_answers' => count($correctAnswers),
-            'created_by' => Auth::user()->id
+            'created_by' => Auth::user()->id,
+            'uuid' => Str::uuid()->toString(),
         ]);
 
         return redirect()->route('dashboard')->with('status', 'question-stored');
@@ -46,9 +48,19 @@ class QuestionController extends Controller
         return view('dashboard', ['questions' => $questions]);
     }
 
+    public function home() {
+        return view('home');
+    }
+
+    public function show($uuid) {
+        $question = Question::query()->where('uuid', $uuid)->firstOrFail();
+
+        return view('welcome', ['question' => $question]);
+    }
+
     public function statisctical($id) {
         $question = Question::findOrFail($id);
-        $questionUsers = $question->userQuestions()->orderBy('score', 'desc')->get();
+        $questionUsers = $question->userQuestions()->orderBy('score', 'desc')->paginate(20);
 
         return view('question-statistical', ['question' => $question, 'questionUsers' => $questionUsers]);
     }
