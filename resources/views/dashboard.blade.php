@@ -40,6 +40,9 @@
                                         Link
                                     </th>
                                     <th scope="col">
+                                        Trạng thái
+                                    </th>
+                                    <th scope="col">
                                         Hành động
                                     </th>
                                 </tr>
@@ -63,7 +66,17 @@
                                         {{ route('question.show', $question->uuid) }}
                                     </td>
                                     <td>
-                                        <img class="jsDeleteQuestion filter-red" src = "{{ asset('/icon/trash.svg') }}" style="width: 23px; cursor: pointer" data-id={{ $question->id }}/>
+                                        @if ($question->is_active)
+                                            <span style="color: green; font-weight:bold">Active</span>
+                                        @else
+                                            <span style="color: red; font-weight:bold">Inactive</span>
+                                        @endif
+                                    <td>
+                                        <div class="flex gap-4">
+                                            <img class="jsDeleteQuestion filter-red" src = "{{ asset('/icon/trash.svg') }}" style="width: 23px; cursor: pointer" data-id={{ $question->id }}/>
+                                            <img class="jsUpdateStatusQuestion" src = "{{ asset('/icon/reset.svg') }}" style="width: 23px; cursor: pointer" data-id={{ $question->id }}/>
+                                        </div>
+                                        
                                     </td>
                                 </tr>
                                 @endforeach
@@ -81,6 +94,23 @@
                 $.ajax({
                     url: `/question/${id}`,
                     type: 'DELETE',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+        $('.jsUpdateStatusQuestion').on('click', function() {
+            let id = $(this).data('id');
+            if(confirm('Bạn có chắc chắn muốn vô hiệu hoá câu hỏi này không?')) {
+                $.ajax({
+                    url: `/question/${id}`,
+                    type: 'PUT',
                     data: {
                         _token: "{{ csrf_token() }}"
                     },

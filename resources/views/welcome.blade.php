@@ -83,13 +83,40 @@
 
         $('.jsFormSumbit').on('submit', function(e) {
             e.preventDefault();
+            if (getCookie('is_s_s_a') === '1') {
+                alert('Bạn chỉ được trả lời một lần');
+                return;
+            }
             let maxAnswer = $('.jsAnswerCheckbox').data('max-answer');
             let totalChecked = $('.jsAnswerCheckbox:checked').length;
             if (totalChecked !== maxAnswer) {
                 alert('Vui lòng chọn đủ đáp án');
             } else {
+                let now = new Date();
+                now.setMinutes(now.getMinutes() + (365* 24 * 60));
+                setCookie('is_s_s_a', '1', now.toUTCString());
                 this.submit();
             }
         })
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(cname, cvalue, expires) {
+            document.cookie = cname + "=" + cvalue + ";expires=" + expires + ";path=/";
+        }
     </script>
 </html>

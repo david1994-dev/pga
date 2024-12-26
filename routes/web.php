@@ -18,6 +18,7 @@ Route::get('/question', function () {
 Route::post('/question', [QuestionController::class, 'store'])->middleware(['auth'])->name('question.store');
 Route::get('/question/{uuid}', [QuestionController::class, 'show'])->name('question.show');
 Route::delete('/question/{id}', [QuestionController::class, 'delete'])->middleware(['auth'])->name('question.delete');
+Route::put('/question/{id}', [QuestionController::class, 'update'])->middleware(['auth'])->name('question.update');
 Route::get('/question-statistical/{id}', [QuestionController::class, 'statisctical'])->middleware(['auth'])->name('question.statistical');
 
 Route::middleware('auth')->group(function () {

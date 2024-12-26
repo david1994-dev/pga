@@ -53,7 +53,7 @@ class QuestionController extends Controller
     }
 
     public function show($uuid) {
-        $question = Question::query()->where('uuid', $uuid)->firstOrFail();
+        $question = Question::query()->where('uuid', $uuid)->where('is_active', true)->firstOrFail();
 
         return view('welcome', ['question' => $question]);
     }
@@ -68,6 +68,14 @@ class QuestionController extends Controller
     public function delete($id) {
         Question::findOrFail($id)->delete();
         UserQuestion::where('question_id', $id)->delete();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function update ($id) {
+        $question = Question::findOrFail($id);
+        $question->is_active = !$question->is_active;
+        $question->save();
 
         return response()->json(['status' => 'success']);
     }

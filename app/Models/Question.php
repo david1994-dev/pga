@@ -10,6 +10,7 @@ class Question extends Model
     protected $casts = [
         'answers' => 'array',
         'correct_answers' => 'array',
+        'is_active' => 'boolean',
     ];
 
     public function userQuestions()

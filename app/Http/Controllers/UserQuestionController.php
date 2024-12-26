@@ -15,7 +15,7 @@ class UserQuestionController extends Controller
             'answers' => 'array|required',
         ]);
         $questionUuid = $request->input('question_uuid');
-        $question = Question::where('uuid', $questionUuid)->firstOrFail();
+        $question = Question::where('uuid', $questionUuid)->where('is_active', true)->firstOrFail();
         $answers = $validatedData['answers'];
         if (count($answers) !== $question->max_answers) {
             throw new \Exception('You have selected more answers than allowed');
