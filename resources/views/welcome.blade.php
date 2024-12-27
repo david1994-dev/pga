@@ -34,7 +34,7 @@
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                     <main class="mt-6">
-                        <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit">
+                        <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit" data-question-id="{{ $question->id }}">
                             @csrf
                             <input type="hidden" name="question_uuid" value="{{ $question->uuid }}">
                         <div>
@@ -83,10 +83,12 @@
 
         $('.jsFormSumbit').on('submit', function(e) {
             e.preventDefault();
-            if (getCookie('is_s_s_a') === '1') {
+            let questionId = $(this).data('question-id')
+            if (getCookie('is_s_s_a') == questionId) {
                 alert('Bạn chỉ được trả lời một lần');
                 return;
             }
+
             let maxAnswer = $('.jsAnswerCheckbox').data('max-answer');
             let totalChecked = $('.jsAnswerCheckbox:checked').length;
             if (totalChecked !== maxAnswer) {
@@ -94,7 +96,7 @@
             } else {
                 let now = new Date();
                 now.setMinutes(now.getMinutes() + (365* 24 * 60));
-                setCookie('is_s_s_a', '1', now.toUTCString());
+                setCookie('is_s_s_a', questionId, now.toUTCString());
                 this.submit();
             }
         })
