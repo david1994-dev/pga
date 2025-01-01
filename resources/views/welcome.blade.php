@@ -60,7 +60,7 @@
                         </div>
                         <div class="mt-4">
                             <div class="flex flex-col">
-                                <div class="uppercase">
+                                <div>
                                         {{ $question->title }}
                                     <div style="color: red"><small>*Chọn {{$question->max_answers }} đáp án</small></div>
                                 </div>
