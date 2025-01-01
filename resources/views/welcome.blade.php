@@ -27,6 +27,10 @@
             .text-input-name {
                 background-color: #b7def3;
             }
+
+            .main-form {
+                margin-left: 20%;
+            }
         </style>
     </head>
     <body class="font-sans antialiased bg-blue-100 question-background">
@@ -46,7 +50,7 @@
         <div>
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                    <main class="mt-6 ml-72">
+                    <main class="mt-6 main-form">
                         <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit" data-question-id="{{ $question->id }}">
                             @csrf
                             <input type="hidden" name="question_uuid" value="{{ $question->uuid }}">
@@ -54,7 +58,7 @@
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 uppercase">Họ và Tên - Phòng ban</label>
                             <input type="text" name="user_answer" id="first_name" class="border border-white-200 text-input-name text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full" placeholder="Nguyễn Văn A - BU1" required />
                         </div>
-                        <div class="grid gap-6 lg:grid-cols-2 lg:gap-8 pt-3">
+                        <div>
                             <div class="flex flex-col">
                                 <div class="uppercase">
                                         {{ $question->title }}
@@ -62,7 +66,7 @@
                                 </div>
                                 <div class="flex flex-col mx-8">
                                     @foreach ($question->answers as $answer)
-                                        <div>
+                                        <div class="text-left">
                                             <input data-max-answer="{{ $question->max_answers }}" type="checkbox" id="question" name="answers[]" value="{{ $answer }}" class="jsAnswerCheckbox">
                                         <label for="question_{{ $question->id }}">{{ $answer }}</label>
                                         </div>
