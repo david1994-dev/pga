@@ -24,11 +24,14 @@
                 background-image: url('{{ Vite::asset('resources/images/background.png') }}');
                 background-repeat: no-repeat;
             }
+            .text-input-name {
+                background-color: #b7def3;
+            }
         </style>
     </head>
     <body class="font-sans antialiased bg-blue-100 question-background">
-        <div class="flex text-center">
-            <img  src="{{ Vite::asset('resources/images/logo.png') }}" alt="image" style="height: 150px; margin: 0 auto" />
+        <div class="relative h-150 w-150">
+            <img class="absolute top-0 right-0 h-28 w-28" src="{{ Vite::asset('resources/images/logo.png') }}" alt="image"/>
         </div>
         @if (session('status') == 'answer-stored')
             <div class="mb-4 font-medium text-sm bold text-center text-white" style="background: green ; padding: 10px">
@@ -43,13 +46,13 @@
         <div>
             <div class="relative min-h-screen flex flex-col items-center">
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                    <main class="mt-6">
+                    <main class="mt-6 ml-72">
                         <form method="POST" action="{{ route('anwser') }}" class="jsFormSumbit" data-question-id="{{ $question->id }}">
                             @csrf
                             <input type="hidden" name="question_uuid" value="{{ $question->uuid }}">
                         <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 uppercase">Họ Tên - Phòng ban</label>
-                            <input type="text" name="user_answer" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" placeholder="Nguyễn Văn A - BU1" required />
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 uppercase">Họ và Tên - Phòng ban</label>
+                            <input type="text" name="user_answer" id="first_name" class="border border-white-200 text-input-name text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full" placeholder="Nguyễn Văn A - BU1" required />
                         </div>
                         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8 pt-3">
                             <div class="flex flex-col">
