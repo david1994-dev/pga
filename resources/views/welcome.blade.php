@@ -58,7 +58,7 @@
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 uppercase">Họ và Tên - Phòng ban</label>
                             <input type="text" name="user_answer" id="first_name" class="border border-white-200 text-input-name text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full" placeholder="Nguyễn Văn A - BU1" required />
                         </div>
-                        <div>
+                        <div class="mt-4">
                             <div class="flex flex-col">
                                 <div class="uppercase">
                                         {{ $question->title }}
